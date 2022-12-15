@@ -1,0 +1,8 @@
+BEGIN;
+
+DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS accounts;
+DROP TYPE IF EXISTS currency;
+DROP EXTENSION IF EXISTS pgcrypto;
+
+commit;

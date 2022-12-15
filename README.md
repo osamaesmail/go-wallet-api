@@ -21,13 +21,15 @@
 * [ ] protobuf lint
 * [ ] protobuf check breaking changes
 * [x] Business logic unit tests
-* [ ] Integration tests
 * [x] Dockerized
+* [x] Docker Compose
 * [x] Logging service
 * [x] REST Transport (all requests are post)
 * [x] gRPC Transport
 * [ ] gRPC client
 * [ ] Read from os env
+* [ ] Seed command to fill db with test data
+* [ ] Integration tests
 
 
 # endpoints

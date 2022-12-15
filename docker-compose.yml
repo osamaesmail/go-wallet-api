@@ -58,3 +58,22 @@ services:
     ports:
       - "5001:5001"
       - "5000:5000"
+
+  grpc:
+    container_name: wallet-grpc
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    entrypoint: /bin/bash ./debug-grpc.sh
+    restart: always
+    networks:
+      api:
+        ipv4_address: 172.23.0.104
+    depends_on:
+      - db
+    ports:
+      - "4001:5001"
+      - "4000:5000"

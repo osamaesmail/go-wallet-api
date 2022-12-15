@@ -1,0 +1,43 @@
+version: "3.9"
+
+networks:
+  api:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.23.0.0/16
+
+services:
+  db:
+    container_name: wallet-db
+    image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      api:
+        ipv4_address: 172.23.0.101
+    restart: unless-stopped
+
+  rest:
+    container_name: wallet-rest
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    entrypoint: /bin/bash /debug-rest.sh
+    restart: always
+    networks:
+      api:
+        ipv4_address: 172.23.0.102
+    depends_on:
+      - db
+    ports:
+      - "5001:5001"

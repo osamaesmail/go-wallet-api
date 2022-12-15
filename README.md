@@ -1,8 +1,19 @@
 # Wallet API
 
+# dependencies
+* go v18
+* docker
+* docker-compose
+* postgres
+* mockery
+* golangci-lint
+* protobuf
+
+# Setup
+* run `make` for help
+* run `make dev` to run all the services in docker
+
 # features
-* [x] go `v1.18`
-* [x] `Makefile` for ready commands
 * [x] mockery mocks
 * [x] lint
 * [x] protobuf generator
@@ -10,7 +21,7 @@
 * [ ] protobuf check breaking changes
 * [x] Business logic unit tests
 * [ ] Integration tests
-* [ ] Dockerized
+* [x] Dockerized
 * [x] Logging service
 * [x] REST Transport (all requests are post)
 * [x] gRPC Transport

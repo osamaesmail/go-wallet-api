@@ -19,6 +19,12 @@ rest: ## run REST server
 buf: ## generate buf code
 	./pb/compile.sh
 
+buf-lent: ## lint buf code
+	buf lint
+
+buf-breaking: ## check breaking changes
+	buf breaking --against '.git#branch=master'
+
 mocks: ## generate mocks
 	mockery --all --recursive --keeptree
 

@@ -18,8 +18,8 @@
 * [x] SQL Migrations
 * [x] lint
 * [x] protobuf generator
-* [ ] protobuf lint
-* [ ] protobuf check breaking changes
+* [x] protobuf lint
+* [x] protobuf check breaking changes
 * [x] Business logic unit tests
 * [x] Dockerized
 * [x] Docker Compose

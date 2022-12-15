@@ -26,6 +26,7 @@
 * [x] Logging service
 * [x] REST Transport (all requests are post)
 * [x] gRPC Transport
+* [x] Debug using `dlv`
 * [ ] gRPC client
 * [ ] Read from os env
 * [ ] Seed command to fill db with test data

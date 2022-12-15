@@ -27,6 +27,7 @@
 * [x] REST Transport (all requests are post)
 * [x] gRPC Transport
 * [ ] gRPC client
+* [ ] Read from os env
 
 
 # endpoints

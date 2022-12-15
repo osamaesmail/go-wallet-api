@@ -17,12 +17,12 @@ func NewService(repo IRepository, mapper Mapper) Service {
 func (s Service) Create(req CreateRequest) (ResponseDTO, error) {
 	model := s.mapper.CreateRequestToModel(req)
 	resp, err := s.repo.Create(model)
-	
+
 	return s.mapper.ModelToDTO(resp), err
 }
 
 func (s Service) List(req ListRequest) (ResponseListDTO, error) {
 	resp, err := s.repo.List(req)
-	
+
 	return s.mapper.ModelsToListDTO(resp), err
 }

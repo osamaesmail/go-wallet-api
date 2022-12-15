@@ -1,7 +1,7 @@
 package account
 
 import (
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	"time"
 )
 
@@ -22,7 +22,7 @@ func (s LoggingService) Create(req CreateRequest) (res ResponseDTO, err error) {
 			"err", err,
 		)
 	}(time.Now())
-	
+
 	return s.IService.Create(req)
 }
 
@@ -34,6 +34,6 @@ func (s LoggingService) List(req ListRequest) (res ResponseListDTO, err error) {
 			"err", err,
 		)
 	}(time.Now())
-	
+
 	return s.IService.List(req)
 }

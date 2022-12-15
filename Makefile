@@ -1,19 +1,23 @@
 .PHONY: grpc rest buf mocks lint test
 
-grpc:
+
+help: ## Show Help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+grpc: ## run gRPC server
 	./debug-grpc.sh
 
-rest:
+rest: ## run REST server
 	./debug-rest.sh
 
-buf:
+buf: ## generate buf code
 	./pb/compile.sh
 
-mocks:
+mocks: ## generate mocks
 	mockery --all --recursive --keeptree
 
-lint:
+lint: ## lint go code
 	golangci-lint run
 
-test:
-	go test -v -cover ./...
+test: ## run tests
+	go test ./...

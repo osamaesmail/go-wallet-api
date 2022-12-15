@@ -21,7 +21,7 @@ func NewHTTPTransport(
 func (t HTTPTransport) Create() http.Handler {
 	return kithttp.NewServer(
 		t.endpoint.Create,
-		api.NewJsonRequestDecoder(CreateRequest{}),
+		api.NewJSONRequestDecoder(CreateRequest{}),
 		kithttp.EncodeJSONResponse,
 		t.options...,
 	)
@@ -30,7 +30,7 @@ func (t HTTPTransport) Create() http.Handler {
 func (t HTTPTransport) List() http.Handler {
 	return kithttp.NewServer(
 		t.endpoint.List,
-		api.NewJsonRequestDecoder(ListRequest{}),
+		api.NewJSONRequestDecoder(ListRequest{}),
 		kithttp.EncodeJSONResponse,
 		t.options...,
 	)

@@ -43,6 +43,6 @@ func decimalGreaterThan(validate *validator.Validate) error {
 	); err != nil {
 		return err
 	}
-	
+
 	return nil
 }

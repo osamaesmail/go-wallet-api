@@ -15,8 +15,8 @@ type Endpoint struct {
 	service   IService
 }
 
-func NewEndpoint(validator *validator.Validate, service IService) Endpoint {
-	return Endpoint{validator, service}
+func NewEndpoint(validate *validator.Validate, service IService) Endpoint {
+	return Endpoint{validate, service}
 }
 
 func (e Endpoint) Create(ctx context.Context, request interface{}) (interface{}, error) {

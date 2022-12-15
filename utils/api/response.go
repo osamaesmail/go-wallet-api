@@ -16,7 +16,7 @@ var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
 
 func EncodeError(ctx context.Context, err error, w http.ResponseWriter) {
 	resp := &ErrorResponse{Errors: []Error{}}
-	
+
 	switch cErr := err.(type) {
 	case Error:
 		resp.Errors = []Error{cErr}
@@ -31,7 +31,7 @@ func EncodeError(ctx context.Context, err error, w http.ResponseWriter) {
 			},
 		}
 	}
-	
+
 	err2 := kithttp.EncodeJSONResponse(ctx, w, resp)
 	if err2 != nil {
 		kithttp.DefaultErrorEncoder(ctx, err, w)
@@ -40,12 +40,12 @@ func EncodeError(ctx context.Context, err error, w http.ResponseWriter) {
 
 func handleValidationErrors(errors validator.ValidationErrors) []Error {
 	var errorResponse = make([]Error, 0, len(errors))
-	
+
 	for _, err := range errors {
 		e := validationErrorToText(err)
 		errorResponse = append(errorResponse, e)
 	}
-	
+
 	return errorResponse
 }
 

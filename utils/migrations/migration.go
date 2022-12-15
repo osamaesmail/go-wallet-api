@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
+	// needed to write/read files
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	// needed to connect to postgres
 	_ "github.com/lib/pq"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -29,29 +31,29 @@ func RunWithArgs(db *gorm.DB, args []string, migrationFolder ...string) {
 
 func run(db *gorm.DB, args []string, migrationFolder ...string) {
 	var err error
-	
+
 	migrationPath := DefaultMigrationsFolder
 	if len(migrationFolder) > 0 {
 		migrationPath = migrationFolder[0]
 	}
-	
+
 	sqlDB, err := db.DB()
 	if err != nil {
 		log.Fatal("error getting sql.DB representation:", err)
 	}
-	
+
 	driver, err := postgres.WithInstance(sqlDB, &postgres.Config{})
 	if err != nil {
 		log.Fatal("error instantiating postgres instance:", err)
 	}
-	
+
 	m, err := migrate.NewWithDatabaseInstance("file://"+migrationPath, "postgres", driver)
 	if err != nil {
 		log.Fatal("error instantiating migration instance:", err)
 	}
-	
+
 	startTime := time.Now()
-	
+
 	switch args[0] {
 	case "up":
 		err = m.Up()
@@ -66,14 +68,14 @@ func run(db *gorm.DB, args []string, migrationFolder ...string) {
 		args := args[1:]
 		createFlagSet := flag.NewFlagSet("create", flag.ExitOnError)
 		_ = createFlagSet.Parse(args)
-		
+
 		if createFlagSet.NArg() == 0 {
 			log.Fatal("Specify a name for the migration")
 		}
-		
+
 		createCmd(migrationPath, startTime.Unix(), createFlagSet.Arg(0))
 	}
-	
+
 	if err != nil {
 		if err != migrate.ErrNoChange {
 			log.Fatal(err)
@@ -81,7 +83,7 @@ func run(db *gorm.DB, args []string, migrationFolder ...string) {
 			log.Info(err)
 		}
 	}
-	
+
 	log.Info("Finished after: ", time.Since(startTime).String())
 }
 

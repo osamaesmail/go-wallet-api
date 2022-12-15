@@ -22,17 +22,17 @@ func (GRPCEncoder) Response(_ context.Context, response interface{}) (interface{
 	}, nil
 }
 
-func (e GRPCEncoder) ListResponse(context context.Context, response interface{}) (interface{}, error) {
+func (e GRPCEncoder) ListResponse(ctx context.Context, response interface{}) (interface{}, error) {
 	resp := response.(ResponseListDTO)
-	pbResp := pb.ResponseList{}
-	
+	pbResp := &pb.ResponseList{}
+
 	for _, item := range resp {
-		pbRespItem, err := e.Response(context, item)
+		pbRespItem, err := e.Response(ctx, item)
 		if err != nil {
 			return nil, err
 		}
 		pbResp.Data = append(pbResp.Data, pbRespItem.(*pb.Response))
 	}
-	
+
 	return pbResp, nil
 }

@@ -19,22 +19,22 @@ func (c config) Bind(v interface{}) error {
 	viper.SetConfigType(c.Type)
 	viper.AddConfigPath(c.Path)
 	viper.SetConfigName(c.Name)
-	
+
 	err := viper.ReadInConfig()
 	if err != nil {
 		return err
 	}
-	
+
 	err = viper.Unmarshal(&v)
 	if err != nil {
 		return err
 	}
-	
+
 	validator, err := validation.NewValidation()
 	if err != nil {
 		return err
 	}
-	
+
 	return validator.Struct(v)
 }
 

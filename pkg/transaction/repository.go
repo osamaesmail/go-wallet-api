@@ -23,7 +23,7 @@ func NewRepository(db *gorm.DB) Repository {
 func (r Repository) Create(model Transaction) (resp Transaction, err error) {
 	tx := r.db.Begin()
 	var fromAccount account.Account
-	
+
 	err = tx.Create(&model).Error
 	if err != nil {
 		tx.Rollback()
@@ -71,14 +71,14 @@ func (r Repository) List(req ListRequest) (models []DTO, total int64, err error)
 		Joins("JOIN accounts a_to ON transactions.to_account = a_to.id").
 		Where("a_from.user_id", req.UserID).
 		Or("a_to.user_id", req.UserID)
-	
+
 	err = q.Count(&total).Error
 	if err != nil {
 		return
 	}
-	
+
 	err = q.Select("transactions.*", "a_from.currency currency").
 		Offset(req.GetOffset()).Limit(req.GetPerPage()).Find(&models).Error
-	
+
 	return
 }

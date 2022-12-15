@@ -1,6 +1,13 @@
 # Wallet API
 
 # features
+* [x] go `v1.18`
+* [x] `Makefile` for ready commands
+* [x] mockery mocks
+* [x] lint
+* [x] protobuf generator
+* [ ] protobuf lint
+* [ ] protobuf check breaking changes
 * [x] Business logic unit tests
 * [ ] Integration tests
 * [ ] Dockerized

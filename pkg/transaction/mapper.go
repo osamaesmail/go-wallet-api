@@ -20,14 +20,7 @@ func (m Mapper) CreateRequestToModel(req CreateRequest) Transaction {
 }
 
 func (m Mapper) ModelDTOToDTO(t DTO) ResponseDTO {
-	return ResponseDTO{
-		ID:          t.ID,
-		FromAccount: t.FromAccount,
-		ToAccount:   t.ToAccount,
-		Amount:      t.Amount,
-		Currency:    t.Currency,
-		CreatedAt:   t.CreatedAt,
-	}
+	return ResponseDTO(t)
 }
 
 func (m Mapper) ModelToDTO(t Transaction) ResponseDTO {

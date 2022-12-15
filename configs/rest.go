@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"go-api-grpc/utils/config"
+	"go-wallet-api/utils/config"
 )
 
 type Rest struct {

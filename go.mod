@@ -1,4 +1,4 @@
-module go-api-grpc
+module go-wallet-api
 
 go 1.19
 

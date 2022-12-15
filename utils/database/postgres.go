@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"go-api-grpc/configs"
+	"go-wallet-api/configs"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

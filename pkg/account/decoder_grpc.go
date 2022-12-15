@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
-	pb "go-api-grpc/pb/account/v1"
+	pb "go-wallet-api/pb/account/v1"
 )
 
 type GRPCDecoder struct{}

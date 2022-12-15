@@ -2,7 +2,7 @@ package transaction
 
 import (
 	"context"
-	pb "go-api-grpc/pb/transaction/v1"
+	pb "go-wallet-api/pb/transaction/v1"
 )
 
 type GRPCEncoder struct{}
@@ -32,7 +32,7 @@ func (e GRPCEncoder) ListResponse(ctx context.Context, response interface{}) (in
 		TotalPage:    int64(resp.TotalPages),
 		TotalRecords: int64(resp.TotalRecords),
 	}
-
+	
 	for _, item := range resp.Data {
 		pbRespItem, err := e.Response(ctx, item)
 		if err != nil {
@@ -40,6 +40,6 @@ func (e GRPCEncoder) ListResponse(ctx context.Context, response interface{}) (in
 		}
 		pbResp.Data = append(pbResp.Data, pbRespItem.(*pb.Response))
 	}
-
+	
 	return pbResp, nil
 }

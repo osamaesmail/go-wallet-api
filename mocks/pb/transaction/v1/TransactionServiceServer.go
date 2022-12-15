@@ -4,7 +4,7 @@ package mocks
 
 import (
 	context "context"
-	v1 "go-api-grpc/pb/transaction/v1"
+	v1 "go-wallet-api/pb/transaction/v1"
 
 	mock "github.com/stretchr/testify/mock"
 )

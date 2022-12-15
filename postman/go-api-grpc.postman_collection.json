@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "d426031b-7865-4cfa-9b23-95f5f0ae224d",
-		"name": "go-api-grpc",
+		"name": "go-wallet-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "19188156"
 	},

@@ -3,7 +3,7 @@ package account
 import (
 	"context"
 	gt "github.com/go-kit/kit/transport/grpc"
-	pb "go-api-grpc/pb/account/v1"
+	pb "go-wallet-api/pb/account/v1"
 )
 
 type GRPCTransport struct {

@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"go-api-grpc/utils/slice"
+	"go-wallet-api/utils/slice"
 )
 
 type Mapper struct {

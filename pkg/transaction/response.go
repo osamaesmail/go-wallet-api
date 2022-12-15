@@ -3,7 +3,7 @@ package transaction
 import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
-	"go-api-grpc/utils/pagination"
+	"go-wallet-api/utils/pagination"
 	"time"
 )
 

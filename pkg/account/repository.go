@@ -1,7 +1,7 @@
 package account
 
 import (
-	"go-api-grpc/utils/api"
+	"go-wallet-api/utils/api"
 	"gorm.io/gorm"
 )
 

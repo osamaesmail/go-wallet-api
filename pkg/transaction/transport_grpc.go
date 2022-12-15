@@ -3,7 +3,7 @@ package transaction
 import (
 	"context"
 	gt "github.com/go-kit/kit/transport/grpc"
-	pb "go-api-grpc/pb/transaction/v1"
+	pb "go-wallet-api/pb/transaction/v1"
 )
 
 type GRPCTransport struct {

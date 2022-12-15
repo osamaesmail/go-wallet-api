@@ -1,6 +1,6 @@
 package account
 
-import "go-api-grpc/utils/slice"
+import "go-wallet-api/utils/slice"
 
 type Mapper struct {
 }

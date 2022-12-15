@@ -3,9 +3,9 @@ package cmd
 import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"go-api-grpc/configs"
-	"go-api-grpc/utils/database"
-	"go-api-grpc/utils/migrations"
+	"go-wallet-api/configs"
+	"go-wallet-api/utils/database"
+	"go-wallet-api/utils/migrations"
 )
 
 func Migrations() *cobra.Command {

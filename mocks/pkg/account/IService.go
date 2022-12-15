@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	account "go-api-grpc/pkg/account"
+	account "go-wallet-api/pkg/account"
 
 	mock "github.com/stretchr/testify/mock"
 )

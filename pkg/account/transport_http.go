@@ -2,7 +2,7 @@ package account
 
 import (
 	kithttp "github.com/go-kit/kit/transport/http"
-	"go-api-grpc/utils/api"
+	"go-wallet-api/utils/api"
 	"net/http"
 )
 

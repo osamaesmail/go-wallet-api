@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "go-api-grpc/pb/transaction/v1";
+option go_package = "go-wallet-api/pb/transaction/v1";
 
 package transaction.v1;
 

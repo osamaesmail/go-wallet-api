@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/spf13/cobra"
-	"go-api-grpc/cmd"
+	"go-wallet-api/cmd"
 )
 
 func main() {
@@ -10,12 +10,12 @@ func main() {
 		Use:   "app",
 		Short: "Run App Commands",
 	}
-
+	
 	rootCmd.AddCommand(
 		cmd.Rest(),
 		cmd.GRPC(),
 		cmd.Migrations(),
 	)
-
+	
 	cobra.CheckErr(rootCmd.Execute())
 }

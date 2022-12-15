@@ -5,9 +5,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
-	transactionMock "go-api-grpc/mocks/pkg/transaction"
-	"go-api-grpc/pkg/transaction"
-	"go-api-grpc/utils/pagination"
+	transactionMock "go-wallet-api/mocks/pkg/transaction"
+	"go-wallet-api/pkg/transaction"
+	"go-wallet-api/utils/pagination"
 	"testing"
 )
 
@@ -30,7 +30,7 @@ func TestService_Create(t *testing.T) {
 		"success", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-
+			
 			// test data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -50,24 +50,24 @@ func TestService_Create(t *testing.T) {
 				ToAccount:   newModel.ToAccount,
 				Amount:      newModel.Amount,
 			}
-
+			
 			m.Repo.On("Create", model).Return(newModel, nil)
-
+			
 			// call method
 			resp, err := service.Create(req)
-
+			
 			// assert
 			assert.Nil(t, err)
 			assert.Equal(t, respDTO, resp)
 			m.Repo.AssertExpectations(t)
 		},
 	)
-
+	
 	t.Run(
 		"error", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-
+			
 			// test data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -79,13 +79,13 @@ func TestService_Create(t *testing.T) {
 				ToAccount:   req.ToAccount,
 				Amount:      req.Amount,
 			}
-
+			
 			// mocks
 			m.Repo.On("Create", model).Return(transaction.Transaction{}, errors.New("err"))
-
+			
 			// call method
 			_, err := service.Create(req)
-
+			
 			// assert
 			assert.NotNil(t, err)
 			assert.Equal(t, err.Error(), "err")
@@ -99,7 +99,7 @@ func TestService_List(t *testing.T) {
 		"success", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-
+			
 			// test data
 			req := transaction.ListRequest{
 				UserID: uuid.New(),
@@ -126,35 +126,35 @@ func TestService_List(t *testing.T) {
 					TotalRecords: 2,
 				},
 			}
-
+			
 			m.Repo.On("List", req).Return(modelsDto, int64(2), nil)
-
+			
 			// call method
 			resp, err := service.List(req)
-
+			
 			// assert
 			assert.Nil(t, err)
 			assert.Equal(t, respListDTO, resp)
 			m.Repo.AssertExpectations(t)
 		},
 	)
-
+	
 	t.Run(
 		"error", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-
+			
 			// test data
 			req := transaction.ListRequest{
 				UserID: uuid.New(),
 			}
-
+			
 			// mocks
 			m.Repo.On("List", req).Return([]transaction.DTO{}, int64(0), errors.New("err"))
-
+			
 			// call method
 			_, err := service.List(req)
-
+			
 			// assert
 			assert.NotNil(t, err)
 			assert.Equal(t, err.Error(), "err")

@@ -2,7 +2,7 @@ package account
 
 import (
 	"context"
-	pb "go-api-grpc/pb/account/v1"
+	pb "go-wallet-api/pb/account/v1"
 )
 
 type GRPCEncoder struct{}
@@ -25,7 +25,7 @@ func (GRPCEncoder) Response(_ context.Context, response interface{}) (interface{
 func (e GRPCEncoder) ListResponse(ctx context.Context, response interface{}) (interface{}, error) {
 	resp := response.(ResponseListDTO)
 	pbResp := &pb.ListResponse{}
-
+	
 	for _, item := range resp {
 		pbRespItem, err := e.Response(ctx, item)
 		if err != nil {
@@ -33,6 +33,6 @@ func (e GRPCEncoder) ListResponse(ctx context.Context, response interface{}) (in
 		}
 		pbResp.Data = append(pbResp.Data, pbRespItem.(*pb.Response))
 	}
-
+	
 	return pbResp, nil
 }

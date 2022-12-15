@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	transaction "go-api-grpc/pkg/transaction"
+	transaction "go-wallet-api/pkg/transaction"
 
 	mock "github.com/stretchr/testify/mock"
 )

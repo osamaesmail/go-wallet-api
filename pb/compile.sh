@@ -11,5 +11,5 @@
 # See also
 #  https://github.com/grpc/grpc-go/tree/master/examples
 
-protoc ./pb/account/main.proto --go_out=../ --go-grpc_out=../
-protoc ./pb/transaction/main.proto --go_out=../ --go-grpc_out=../
+protoc ./pb/account/v1/main.proto --go_out=../ --go-grpc_out=../
+protoc ./pb/transaction/v1/main.proto --go_out=../ --go-grpc_out=../

@@ -2,7 +2,7 @@ package transaction
 
 import (
 	"context"
-	pb "go-api-grpc/pb/transaction"
+	pb "go-api-grpc/pb/transaction/v1"
 )
 
 type GRPCEncoder struct{}
@@ -15,7 +15,7 @@ func (GRPCEncoder) Response(_ context.Context, response interface{}) (interface{
 	resp := response.(ResponseDTO)
 	amount, _ := resp.Amount.Float64()
 	return &pb.Response{
-		ID:          resp.ID.String(),
+		Id:          resp.ID.String(),
 		FromAccount: resp.FromAccount.String(),
 		ToAccount:   resp.FromAccount.String(),
 		Amount:      amount,
@@ -26,7 +26,7 @@ func (GRPCEncoder) Response(_ context.Context, response interface{}) (interface{
 
 func (e GRPCEncoder) ListResponse(ctx context.Context, response interface{}) (interface{}, error) {
 	resp := response.(ResponseListDTO)
-	pbResp := &pb.ResponseList{
+	pbResp := &pb.ListResponse{
 		Page:         int64(resp.Page),
 		PerPage:      int64(resp.PerPage),
 		TotalPage:    int64(resp.TotalPages),

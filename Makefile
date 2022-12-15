@@ -1,4 +1,4 @@
-.PHONY: dev grpc rest buf mocks lint test
+.PHONY: help dev down grpc rest buf buf-lint buf-breaking mocks lint test
 
 
 help: ## Show Help
@@ -19,7 +19,7 @@ rest: ## run REST server
 buf: ## generate buf code
 	./pb/compile.sh
 
-buf-lent: ## lint buf code
+buf-lint: ## lint buf code
 	buf lint
 
 buf-breaking: ## check breaking changes

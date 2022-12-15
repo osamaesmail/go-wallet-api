@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
-	pb "go-api-grpc/pb/transaction"
+	pb "go-api-grpc/pb/transaction/v1"
 	"go-api-grpc/utils/pagination"
 )
 
@@ -34,7 +34,7 @@ func (GRPCDecoder) CreateRequest(_ context.Context, grpcReq interface{}) (interf
 
 func (GRPCDecoder) ListRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
 	req := grpcReq.(*pb.ListRequest)
-	userID, err := uuid.Parse(req.UserID)
+	userID, err := uuid.Parse(req.UserId)
 	if err != nil {
 		return nil, err
 	}

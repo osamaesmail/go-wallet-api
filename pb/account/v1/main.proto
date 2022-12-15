@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "go-api-grpc/pb/account/v1";
+
+package account.v1;
+
+service AccountService {
+  rpc Create (CreateRequest) returns (Response) {}
+  rpc List (ListRequest) returns (ListResponse) {}
+}
+
+message CreateRequest {
+  string user_id = 1;
+  double balance = 2;
+  string currency = 3;
+}
+
+message ListRequest {
+  string user_id = 1;
+}
+
+message Response {
+  string id = 1;
+  string user_id = 2;
+  double balance = 3;
+  string currency = 4;
+}
+
+message ListResponse {
+  repeated Response data = 1;
+}

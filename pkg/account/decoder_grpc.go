@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
-	pb "go-api-grpc/pb/account"
+	pb "go-api-grpc/pb/account/v1"
 )
 
 type GRPCDecoder struct{}
@@ -15,7 +15,7 @@ func NewGRPCDecoder() GRPCDecoder {
 
 func (GRPCDecoder) CreateRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
 	req := grpcReq.(*pb.CreateRequest)
-	userID, err := uuid.Parse(req.UserID)
+	userID, err := uuid.Parse(req.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func (GRPCDecoder) CreateRequest(_ context.Context, grpcReq interface{}) (interf
 
 func (GRPCDecoder) ListRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
 	req := grpcReq.(*pb.ListRequest)
-	userID, err := uuid.Parse(req.UserID)
+	userID, err := uuid.Parse(req.UserId)
 	if err != nil {
 		return nil, err
 	}

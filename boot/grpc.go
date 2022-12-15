@@ -4,8 +4,8 @@ import (
 	kitLog "github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"go-api-grpc/configs"
-	pbAccount "go-api-grpc/pb/account"
-	pbTransaction "go-api-grpc/pb/transaction"
+	pbAccount "go-api-grpc/pb/account/v1"
+	pbTransaction "go-api-grpc/pb/transaction/v1"
 	"go-api-grpc/pkg/account"
 	"go-api-grpc/pkg/transaction"
 	"go-api-grpc/utils/database"
@@ -70,8 +70,8 @@ func Grpc(cfg configs.GRPC, grpcListener net.Listener, logger kitLog.Logger) {
 	txServer := transaction.NewGRPCTransport(txEndpoint, txDecoder, txEncoder)
 
 	baseServer := grpc.NewServer()
-	pbAccount.RegisterAccountServer(baseServer, accountServer)
-	pbTransaction.RegisterTransactionServer(baseServer, txServer)
+	pbAccount.RegisterAccountServiceServer(baseServer, accountServer)
+	pbTransaction.RegisterTransactionServiceServer(baseServer, txServer)
 	_ = level.Info(logger).Log("msg", "Server started successfully 🚀")
 	err = baseServer.Serve(grpcListener)
 	if err != nil {

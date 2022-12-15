@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	kitLog "github.com/go-kit/log"
-
+	
 	"github.com/go-kit/log/level"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -29,27 +29,27 @@ func runGrpc(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	
 	// logger
 	var logger kitLog.Logger
 	logger = kitLog.NewJSONLogger(os.Stdout)
 	logger = kitLog.With(logger, "ts", kitLog.DefaultTimestampUTC)
 	logger = kitLog.With(logger, "caller", kitLog.DefaultCaller)
-
+	
 	errs := make(chan error)
 	go func() {
-		quite := make(chan os.Signal, 1)
-		signal.Notify(quite, syscall.SIGINT, syscall.SIGTERM, syscall.SIGALRM)
-		errs <- fmt.Errorf("%s", <-quite)
+		quit := make(chan os.Signal, 1)
+		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGALRM)
+		errs <- fmt.Errorf("%s", <-quit)
 	}()
-
+	
 	grpcListener, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.Port))
 	if err != nil {
 		_ = logger.Log("during", "Listen", "err", err)
 		os.Exit(1)
 	}
-
+	
 	go boot.Grpc(cfg, grpcListener, logger)
-
+	
 	_ = level.Error(logger).Log("exit", <-errs)
 }

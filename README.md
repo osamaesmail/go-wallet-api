@@ -15,6 +15,7 @@
 
 # features
 * [x] mockery mocks
+* [x] SQL Migrations
 * [x] lint
 * [x] protobuf generator
 * [ ] protobuf lint

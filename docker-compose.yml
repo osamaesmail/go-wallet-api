@@ -32,7 +32,7 @@ services:
       - .env
     volumes:
       - .:/app
-    entrypoint: /bin/bash /debug-rest.sh
+    entrypoint: /bin/bash ./debug-rest.sh
     restart: always
     networks:
       api:
@@ -40,4 +40,4 @@ services:
     depends_on:
       - db
     ports:
-      - "5001:5001"
+      - "6000:5000"

@@ -13,5 +13,6 @@ ENV GO111MODULE on
 
 COPY go.mod .
 COPY go.sum .
+COPY .env .
 
-RUN go install
+RUN go mod download

@@ -29,7 +29,7 @@ func TestService_Create(t *testing.T) {
 		"success", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-			
+
 			// test data
 			req := account.CreateRequest{
 				UserID:   uuid.New(),
@@ -49,24 +49,24 @@ func TestService_Create(t *testing.T) {
 				Balance:  req.Balance,
 				Currency: req.Currency,
 			}
-			
+
 			m.Repo.On("Create", model).Return(newModel, nil)
-			
+
 			// call method
 			resp, err := service.Create(req)
-			
+
 			// assert
 			assert.Nil(t, err)
 			assert.Equal(t, respDTO, resp)
 			m.Repo.AssertExpectations(t)
 		},
 	)
-	
+
 	t.Run(
 		"error", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-			
+
 			// test data
 			req := account.CreateRequest{
 				UserID:   uuid.New(),
@@ -78,13 +78,13 @@ func TestService_Create(t *testing.T) {
 				Balance:  req.Balance,
 				Currency: req.Currency,
 			}
-			
+
 			// mocks
 			m.Repo.On("Create", model).Return(account.Account{}, errors.New("err"))
-			
+
 			// call method
 			_, err := service.Create(req)
-			
+
 			// assert
 			assert.NotNil(t, err)
 			assert.Equal(t, err.Error(), "err")
@@ -98,7 +98,7 @@ func TestService_List(t *testing.T) {
 		"success", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-			
+
 			// test data
 			req := account.ListRequest{
 				UserID: uuid.New(),
@@ -117,12 +117,12 @@ func TestService_List(t *testing.T) {
 				Currency: model.Currency,
 			}
 			respListDTO := account.ResponseListDTO{respDTO, respDTO}
-			
+
 			m.Repo.On("List", req).Return(modesls, nil)
-			
+
 			// call method
 			resp, err := service.List(req)
-			
+
 			// assert
 			assert.Nil(t, err)
 			assert.Len(t, resp, 2)
@@ -130,23 +130,23 @@ func TestService_List(t *testing.T) {
 			m.Repo.AssertExpectations(t)
 		},
 	)
-	
+
 	t.Run(
 		"error", func(t *testing.T) {
 			// setup
 			service, m := setupService()
-			
+
 			// test data
 			req := account.ListRequest{
 				UserID: uuid.New(),
 			}
-			
+
 			// mocks
 			m.Repo.On("List", req).Return([]account.Account{}, errors.New("err"))
-			
+
 			// call method
 			_, err := service.List(req)
-			
+
 			// assert
 			assert.NotNil(t, err)
 			assert.Equal(t, err.Error(), "err")

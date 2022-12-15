@@ -1,4 +1,6 @@
 tmp/
 .idea
 dev
+rest-dev
+grpc-dev
 postgres/*

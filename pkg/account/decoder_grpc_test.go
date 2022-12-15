@@ -16,7 +16,7 @@ func setupDecoder() account.GRPCDecoder {
 
 func TestDecoderGRPC_CreateRequest(t *testing.T) {
 	decoder := setupDecoder()
-	
+
 	// test data
 	grpcReq := &pb.CreateRequest{
 		UserId:   "ef907719-4820-4917-b161-4cd3f418c6aa",
@@ -29,7 +29,7 @@ func TestDecoderGRPC_CreateRequest(t *testing.T) {
 		Balance:  decimal.NewFromFloat(grpcReq.Balance),
 		Currency: grpcReq.Currency,
 	}
-	
+
 	resp, err := decoder.CreateRequest(context.Background(), grpcReq)
 	assert.NoError(t, err)
 	assert.Equal(t, req, resp)

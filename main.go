@@ -10,12 +10,12 @@ func main() {
 		Use:   "app",
 		Short: "Run App Commands",
 	}
-	
+
 	rootCmd.AddCommand(
 		cmd.Rest(),
 		cmd.GRPC(),
 		cmd.Migrations(),
 	)
-	
+
 	cobra.CheckErr(rootCmd.Execute())
 }

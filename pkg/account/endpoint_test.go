@@ -32,7 +32,7 @@ func TestEndpoint_Create(t *testing.T) {
 		"success", func(t *testing.T) {
 			// setup
 			endpoint, m := setupEndpoint()
-			
+
 			// test data
 			req := account.CreateRequest{
 				UserID:   uuid.New(),
@@ -45,60 +45,60 @@ func TestEndpoint_Create(t *testing.T) {
 				Balance:  req.Balance,
 				Currency: req.Currency,
 			}
-			
+
 			// mocks
 			m.Service.On("Create", req).Return(respDTO, nil)
-			
+
 			// call method
 			resp, err := endpoint.Create(context.Background(), req)
-			
+
 			// assert
 			assert.Nil(t, err)
 			assert.Equal(t, respDTO, resp)
 			m.Service.AssertExpectations(t)
 		},
 	)
-	
+
 	t.Run(
 		"error - validation", func(t *testing.T) {
 			// setup
 			endpoint, _ := setupEndpoint()
-			
+
 			// test data
 			req := account.CreateRequest{
 				UserID:   uuid.Nil,
 				Balance:  decimal.New(-100, 0),
 				Currency: "Foo",
 			}
-			
+
 			// call method
 			_, err := endpoint.Create(context.Background(), req)
-			
+
 			// assert
 			assert.NotNil(t, err)
 			assert.IsType(t, validator.ValidationErrors{}, err)
 			assert.Len(t, err.(validator.ValidationErrors), 3)
 		},
 	)
-	
+
 	t.Run(
 		"error - service", func(t *testing.T) {
 			// setup
 			endpoint, m := setupEndpoint()
-			
+
 			// test data
 			req := account.CreateRequest{
 				UserID:   uuid.New(),
 				Balance:  decimal.New(100, 0),
 				Currency: "USD",
 			}
-			
+
 			// mocks
 			m.Service.On("Create", req).Return(account.ResponseDTO{}, errors.New("err"))
-			
+
 			// call method
 			_, err := endpoint.Create(context.Background(), req)
-			
+
 			// assert
 			assert.NotNil(t, err)
 			assert.Equal(t, "err", err.Error())
@@ -112,7 +112,7 @@ func TestEndpoint_List(t *testing.T) {
 		"success", func(t *testing.T) {
 			// setup
 			endpoint, m := setupEndpoint()
-			
+
 			// test data
 			req := account.ListRequest{
 				UserID: uuid.New(),
@@ -124,13 +124,13 @@ func TestEndpoint_List(t *testing.T) {
 				Currency: "USD",
 			}
 			respListDTO := account.ResponseListDTO{respDTO, respDTO}
-			
+
 			// mocks
 			m.Service.On("List", req).Return(respListDTO, nil)
-			
+
 			// call method
 			resp, err := endpoint.List(context.Background(), req)
-			
+
 			// assert
 			assert.Nil(t, err)
 			assert.Len(t, resp, 2)
@@ -138,43 +138,43 @@ func TestEndpoint_List(t *testing.T) {
 			m.Service.AssertExpectations(t)
 		},
 	)
-	
+
 	t.Run(
 		"error - validation", func(t *testing.T) {
 			// setup
 			endpoint, _ := setupEndpoint()
-			
+
 			// test data
 			req := account.ListRequest{
 				UserID: uuid.Nil,
 			}
-			
+
 			// call method
 			_, err := endpoint.List(context.Background(), req)
-			
+
 			// assert
 			assert.NotNil(t, err)
 			assert.IsType(t, validator.ValidationErrors{}, err)
 			assert.Len(t, err.(validator.ValidationErrors), 1)
 		},
 	)
-	
+
 	t.Run(
 		"error - service", func(t *testing.T) {
 			// setup
 			endpoint, m := setupEndpoint()
-			
+
 			// test data
 			req := account.ListRequest{
 				UserID: uuid.New(),
 			}
-			
+
 			// mocks
 			m.Service.On("List", req).Return(account.ResponseListDTO{}, errors.New("err"))
-			
+
 			// call method
 			_, err := endpoint.List(context.Background(), req)
-			
+
 			// assert
 			assert.NotNil(t, err)
 			assert.Equal(t, "err", err.Error())

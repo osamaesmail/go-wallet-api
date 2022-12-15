@@ -40,7 +40,7 @@ func TestRepository_Create(t *testing.T) {
 		"success", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -55,9 +55,9 @@ func TestRepository_Create(t *testing.T) {
 			newModel := model
 			newModel.ID = uuid.New()
 			newModel.CreatedAt = time.Now()
-			
+
 			selectRows := []string{"id", "user_id", "balance", "currency", "created_at", "updated_at", "deleted_at"}
-			
+
 			selectValues := []driver.Value{
 				newModel.FromAccount,
 				uuid.New(),
@@ -67,7 +67,7 @@ func TestRepository_Create(t *testing.T) {
 				time.Now(),
 				nil,
 			}
-			
+
 			args := []driver.Value{
 				sqlmock.AnyArg(),
 				newModel.Amount,
@@ -92,7 +92,7 @@ func TestRepository_Create(t *testing.T) {
 				sqlmock.AnyArg(),
 				newModel.ToAccount,
 			}
-			
+
 			// mocks
 			q := `INSERT INTO "transactions" ("id","amount","from_account","to_account","created_at") VALUES ($1,$2,$3,$4,$5)`
 			qSubtract := `UPDATE "accounts" SET "balance"=balance - $1,"updated_at"=$2 WHERE balance - $3 >= 0 AND "accounts"."deleted_at" IS NULL AND "id" = $4`
@@ -108,10 +108,10 @@ func TestRepository_Create(t *testing.T) {
 			m.dbMock.ExpectExec(regexp.QuoteMeta(qAdd)).WithArgs(addArgs...).
 				WillReturnResult(sqlmock.NewResult(0, 1))
 			m.dbMock.ExpectCommit()
-			
+
 			// call method
 			_, err := r.Create(model)
-			
+
 			// assert
 			assert.NoError(t, err)
 			assert.NoError(t, m.dbMock.ExpectationsWereMet())
@@ -121,7 +121,7 @@ func TestRepository_Create(t *testing.T) {
 		"error - create", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -136,7 +136,7 @@ func TestRepository_Create(t *testing.T) {
 			newModel := model
 			newModel.ID = uuid.New()
 			newModel.CreatedAt = time.Now()
-			
+
 			args := []driver.Value{
 				sqlmock.AnyArg(),
 				newModel.Amount,
@@ -144,17 +144,17 @@ func TestRepository_Create(t *testing.T) {
 				newModel.ToAccount,
 				sqlmock.AnyArg(),
 			}
-			
+
 			// mocks
 			q := `INSERT INTO "transactions" ("id","amount","from_account","to_account","created_at") VALUES ($1,$2,$3,$4,$5)`
 			m.dbMock.ExpectBegin()
 			m.dbMock.ExpectExec(regexp.QuoteMeta(q)).WithArgs(args...).
 				WillReturnError(errors.New("err"))
 			m.dbMock.ExpectRollback()
-			
+
 			// call method
 			_, err := r.Create(model)
-			
+
 			// assert
 			assert.Error(t, err)
 			assert.Equal(t, "err", err.Error())
@@ -165,7 +165,7 @@ func TestRepository_Create(t *testing.T) {
 		"error - subtract balance error", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -180,7 +180,7 @@ func TestRepository_Create(t *testing.T) {
 			newModel := model
 			newModel.ID = uuid.New()
 			newModel.CreatedAt = time.Now()
-			
+
 			args := []driver.Value{
 				sqlmock.AnyArg(),
 				newModel.Amount,
@@ -194,7 +194,7 @@ func TestRepository_Create(t *testing.T) {
 				newModel.Amount,
 				newModel.FromAccount,
 			}
-			
+
 			// mocks
 			q := `INSERT INTO "transactions" ("id","amount","from_account","to_account","created_at") VALUES ($1,$2,$3,$4,$5)`
 			qSubtract := `UPDATE "accounts" SET "balance"=balance - $1,"updated_at"=$2 WHERE balance - $3 >= 0 AND "accounts"."deleted_at" IS NULL AND "id" = $4`
@@ -204,10 +204,10 @@ func TestRepository_Create(t *testing.T) {
 			m.dbMock.ExpectExec(regexp.QuoteMeta(qSubtract)).WithArgs(subtractArgs...).
 				WillReturnError(errors.New("err"))
 			m.dbMock.ExpectRollback()
-			
+
 			// call method
 			_, err := r.Create(model)
-			
+
 			// assert
 			assert.Error(t, err)
 			assert.Equal(t, "err", err.Error())
@@ -218,7 +218,7 @@ func TestRepository_Create(t *testing.T) {
 		"error - Insufficient funds", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -233,7 +233,7 @@ func TestRepository_Create(t *testing.T) {
 			newModel := model
 			newModel.ID = uuid.New()
 			newModel.CreatedAt = time.Now()
-			
+
 			args := []driver.Value{
 				sqlmock.AnyArg(),
 				newModel.Amount,
@@ -247,7 +247,7 @@ func TestRepository_Create(t *testing.T) {
 				newModel.Amount,
 				newModel.FromAccount,
 			}
-			
+
 			// mocks
 			q := `INSERT INTO "transactions" ("id","amount","from_account","to_account","created_at") VALUES ($1,$2,$3,$4,$5)`
 			qSubtract := `UPDATE "accounts" SET "balance"=balance - $1,"updated_at"=$2 WHERE balance - $3 >= 0 AND "accounts"."deleted_at" IS NULL AND "id" = $4`
@@ -257,10 +257,10 @@ func TestRepository_Create(t *testing.T) {
 			m.dbMock.ExpectExec(regexp.QuoteMeta(qSubtract)).WithArgs(subtractArgs...).
 				WillReturnResult(sqlmock.NewResult(0, 0))
 			m.dbMock.ExpectRollback()
-			
+
 			// call method
 			_, err := r.Create(model)
-			
+
 			// assert
 			assert.Error(t, err)
 			assert.Equal(t, "From account not found or insufficient funds", err.Error())
@@ -271,7 +271,7 @@ func TestRepository_Create(t *testing.T) {
 		"error - select funded account", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -286,7 +286,7 @@ func TestRepository_Create(t *testing.T) {
 			newModel := model
 			newModel.ID = uuid.New()
 			newModel.CreatedAt = time.Now()
-			
+
 			args := []driver.Value{
 				sqlmock.AnyArg(),
 				newModel.Amount,
@@ -304,7 +304,7 @@ func TestRepository_Create(t *testing.T) {
 				req.Amount,
 				newModel.FromAccount,
 			}
-			
+
 			// mocks
 			q := `INSERT INTO "transactions" ("id","amount","from_account","to_account","created_at") VALUES ($1,$2,$3,$4,$5)`
 			qSubtract := `UPDATE "accounts" SET "balance"=balance - $1,"updated_at"=$2 WHERE balance - $3 >= 0 AND "accounts"."deleted_at" IS NULL AND "id" = $4`
@@ -317,10 +317,10 @@ func TestRepository_Create(t *testing.T) {
 			m.dbMock.ExpectQuery(regexp.QuoteMeta(qSelect)).WithArgs(selectArgs...).
 				WillReturnError(errors.New("err"))
 			m.dbMock.ExpectRollback()
-			
+
 			// call method
 			_, err := r.Create(model)
-			
+
 			// assert
 			assert.Error(t, err)
 			assert.Equal(t, "err", err.Error())
@@ -331,7 +331,7 @@ func TestRepository_Create(t *testing.T) {
 		"error - add balance error", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -346,9 +346,9 @@ func TestRepository_Create(t *testing.T) {
 			newModel := model
 			newModel.ID = uuid.New()
 			newModel.CreatedAt = time.Now()
-			
+
 			selectRows := []string{"id", "user_id", "balance", "currency", "created_at", "updated_at", "deleted_at"}
-			
+
 			selectValues := []driver.Value{
 				newModel.FromAccount,
 				uuid.New(),
@@ -358,7 +358,7 @@ func TestRepository_Create(t *testing.T) {
 				time.Now(),
 				nil,
 			}
-			
+
 			args := []driver.Value{
 				sqlmock.AnyArg(),
 				newModel.Amount,
@@ -383,7 +383,7 @@ func TestRepository_Create(t *testing.T) {
 				sqlmock.AnyArg(),
 				newModel.ToAccount,
 			}
-			
+
 			// mocks
 			q := `INSERT INTO "transactions" ("id","amount","from_account","to_account","created_at") VALUES ($1,$2,$3,$4,$5)`
 			qSubtract := `UPDATE "accounts" SET "balance"=balance - $1,"updated_at"=$2 WHERE balance - $3 >= 0 AND "accounts"."deleted_at" IS NULL AND "id" = $4`
@@ -399,10 +399,10 @@ func TestRepository_Create(t *testing.T) {
 			m.dbMock.ExpectExec(regexp.QuoteMeta(qAdd)).WithArgs(addArgs...).
 				WillReturnError(errors.New("err"))
 			m.dbMock.ExpectRollback()
-			
+
 			// call method
 			_, err := r.Create(model)
-			
+
 			// assert
 			assert.Error(t, err)
 			assert.Equal(t, "err", err.Error())
@@ -413,7 +413,7 @@ func TestRepository_Create(t *testing.T) {
 		"error - to account not found", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.CreateRequest{
 				FromAccount: uuid.New(),
@@ -428,9 +428,9 @@ func TestRepository_Create(t *testing.T) {
 			newModel := model
 			newModel.ID = uuid.New()
 			newModel.CreatedAt = time.Now()
-			
+
 			selectRows := []string{"id", "user_id", "balance", "currency", "created_at", "updated_at", "deleted_at"}
-			
+
 			selectValues := []driver.Value{
 				newModel.FromAccount,
 				uuid.New(),
@@ -440,7 +440,7 @@ func TestRepository_Create(t *testing.T) {
 				time.Now(),
 				nil,
 			}
-			
+
 			args := []driver.Value{
 				sqlmock.AnyArg(),
 				newModel.Amount,
@@ -465,7 +465,7 @@ func TestRepository_Create(t *testing.T) {
 				sqlmock.AnyArg(),
 				newModel.ToAccount,
 			}
-			
+
 			// mocks
 			q := `INSERT INTO "transactions" ("id","amount","from_account","to_account","created_at") VALUES ($1,$2,$3,$4,$5)`
 			qSubtract := `UPDATE "accounts" SET "balance"=balance - $1,"updated_at"=$2 WHERE balance - $3 >= 0 AND "accounts"."deleted_at" IS NULL AND "id" = $4`
@@ -481,10 +481,10 @@ func TestRepository_Create(t *testing.T) {
 			m.dbMock.ExpectExec(regexp.QuoteMeta(qAdd)).WithArgs(addArgs...).
 				WillReturnResult(sqlmock.NewResult(0, 0))
 			m.dbMock.ExpectRollback()
-			
+
 			// call method
 			_, err := r.Create(model)
-			
+
 			// assert
 			assert.Error(t, err)
 			assert.Equal(t, "To Account not found or currency not matched", err.Error())
@@ -498,7 +498,7 @@ func TestRepository_List(t *testing.T) {
 		"success", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			model := transaction.DTO{
 				ID:          uuid.New(),
@@ -512,12 +512,12 @@ func TestRepository_List(t *testing.T) {
 			req := transaction.ListRequest{
 				UserID: uuid.New(),
 			}
-			
+
 			rows := []string{"id", "from_account", "to_account", "amount", "created_at", "currency"}
 			values := []driver.Value{
 				model.ID, model.FromAccount, model.ToAccount, model.Amount, model.CreatedAt, model.Currency,
 			}
-			
+
 			// mocks
 			q := `SELECT transactions.*,a_from.currency currency FROM "transactions" JOIN accounts a_from ON transactions.from_account = a_from.id JOIN accounts a_to ON transactions.to_account = a_to.id WHERE "a_from"."user_id" = $1 OR "a_to"."user_id" = $2`
 			qCount := `SELECT count(*) FROM "transactions" JOIN accounts a_from ON transactions.from_account = a_from.id JOIN accounts a_to ON transactions.to_account = a_to.id WHERE "a_from"."user_id" = $1 OR "a_to"."user_id" = $2`
@@ -527,10 +527,10 @@ func TestRepository_List(t *testing.T) {
 			m.dbMock.ExpectQuery(regexp.QuoteMeta(qCount)).
 				WithArgs(req.UserID, req.UserID).
 				WillReturnRows(sqlmock.NewRows([]string{"count(*)"}).AddRow(2))
-			
+
 			// call method
 			resp, total, err := r.List(req)
-			
+
 			// assert
 			assert.NoError(t, err)
 			assert.Equal(t, int64(2), total)
@@ -538,26 +538,26 @@ func TestRepository_List(t *testing.T) {
 			assert.NoError(t, m.dbMock.ExpectationsWereMet())
 		},
 	)
-	
+
 	t.Run(
 		"error", func(t *testing.T) {
 			r, m := setupRepo(t)
 			defer m.db.Close()
-			
+
 			// data
 			req := transaction.ListRequest{
 				UserID: uuid.New(),
 			}
-			
+
 			// mocks
 			qCount := `SELECT count(*) FROM "transactions" JOIN accounts a_from ON transactions.from_account = a_from.id JOIN accounts a_to ON transactions.to_account = a_to.id WHERE "a_from"."user_id" = $1 OR "a_to"."user_id" = $2`
 			m.dbMock.ExpectQuery(regexp.QuoteMeta(qCount)).
 				WithArgs(req.UserID, req.UserID).
 				WillReturnError(errors.New("err"))
-			
+
 			// call method
 			_, _, err := r.List(req)
-			
+
 			// assert
 			assert.NotNil(t, err)
 			assert.Equal(t, "err", err.Error())

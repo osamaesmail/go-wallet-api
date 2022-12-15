@@ -22,53 +22,53 @@ func Grpc(cfg configs.GRPC, grpcListener net.Listener, logger kitLog.Logger) {
 		_ = logger.Log(err)
 		os.Exit(1)
 	}
-	
+
 	// init DB
 	db, err := database.NewPostgres(cfg.DB)
 	if err != nil {
 		_ = logger.Log(err)
 		os.Exit(1)
 	}
-	
+
 	// validation service
 	validator, err := validation.NewValidation()
 	if err != nil {
 		_ = logger.Log(err)
 		os.Exit(1)
 	}
-	
+
 	// init mappers
 	accountMapper := account.NewMapper()
 	txMapper := transaction.NewMapper()
-	
+
 	// init repos
 	accountRepo := account.NewRepository(db)
 	txRepo := transaction.NewRepository(db)
-	
+
 	// init services
 	accountService := account.NewService(accountRepo, accountMapper)
 	txService := transaction.NewService(txRepo, txMapper)
-	
+
 	// init logging service
 	accountLoggingService := account.NewLoggingService(logger, accountService)
 	txLoggingService := transaction.NewLoggingService(logger, txService)
-	
+
 	// init endpoints
 	accountEndpoint := account.NewEndpoint(validator, accountLoggingService)
 	txEndpoint := transaction.NewEndpoint(validator, txLoggingService)
-	
+
 	// init grpc decoders
 	accountDecoder := account.NewGRPCDecoder()
 	txDecoder := transaction.NewGRPCDecoder()
-	
+
 	// init grpc encoders
 	accountEncoder := account.NewGRPCEncoder()
 	txEncoder := transaction.NewGRPCEncoder()
-	
+
 	// grpc servers
 	accountServer := account.NewGRPCTransport(accountEndpoint, accountDecoder, accountEncoder)
 	txServer := transaction.NewGRPCTransport(txEndpoint, txDecoder, txEncoder)
-	
+
 	baseServer := grpc.NewServer()
 	pbAccount.RegisterAccountServiceServer(baseServer, accountServer)
 	pbTransaction.RegisterTransactionServiceServer(baseServer, txServer)

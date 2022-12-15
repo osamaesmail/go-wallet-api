@@ -12,6 +12,8 @@
 # Setup
 * run `make` for help
 * run `make dev` to run all the services in docker
+* gRPC port is `4000` & debug port is `4001`
+* rest port is `5000` & debug port is `5001`
 
 # features
 * [x] mockery mocks
